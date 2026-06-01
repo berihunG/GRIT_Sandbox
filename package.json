@@ -6,15 +6,22 @@
   "type": "commonjs",
   "scripts": {
     "start": "node server.js",
+    "dev": "node server.js",
     "build": "echo \"No build step required\"",
-    "check": "node -e \"console.log('GRIT check passed')\""
+    "check": "node --check server.js && node --check src/app.js && node --check api/index.js"
   },
   "engines": {
     "node": "20.x"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.19.2",
-    "openai": "^5.0.0"
+    "helmet": "^7.1.0",
+    "mammoth": "^1.8.0",
+    "multer": "^1.4.5-lts.1",
+    "openai": "^5.20.2",
+    "pdf-parse": "^1.1.1"
   },
   "keywords": [
     "grit",
