@@ -1,0 +1,44 @@
+[
+  {
+    "email": "student@grit.edu",
+    "password": "demo123",
+    "role": "student",
+    "name": "Demo Student",
+    "studentId": "S1001"
+  },
+  {
+    "email": "professor@grit.edu",
+    "password": "demo123",
+    "role": "professor",
+    "name": "Demo Professor",
+    "studentId": ""
+  },
+  {
+    "email": "peer@grit.edu",
+    "password": "demo123",
+    "role": "peer",
+    "name": "Demo Peer Reviewer",
+    "studentId": ""
+  },
+  {
+    "email": "employer@grit.edu",
+    "password": "demo123",
+    "role": "employer",
+    "name": "Demo Employer",
+    "studentId": ""
+  },
+  {
+    "email": "advisor@grit.edu",
+    "password": "demo123",
+    "role": "advisor",
+    "name": "Demo Advisor",
+    "studentId": ""
+  },
+  {
+    "email": "admin@grit.edu",
+    "password": "demo123",
+    "role": "admin",
+    "name": "GRIT Administrator",
+    "studentId": ""
+  }
+]

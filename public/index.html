@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GRIT Sandbox GPT OEF Workflow</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>GRIT Sandbox</h1>
+      <p>Gamified · Reputation · Individualized · Talent</p>
+    </div>
+    <div class="session-pill" id="sessionPill">Not signed in</div>
+  </header>
+
+  <main>
+    <section class="hero card">
+      <div>
+        <p class="eyebrow">GPT-powered career-readiness MVP</p>
+        <h2>AI recommends. Human reviewers verify. OEF records trusted skill reputation.</h2>
+        <p>Students upload evidence and view their own OEF score. Advisors, professors, employers, and peers select a student, review evidence, score the skill, and award OEF through an auditable transaction ledger. Admin manages users only.</p>
+      </div>
+      <div class="stats">
+        <div><strong>7</strong><span>AI agents</span></div>
+        <div><strong id="oefBalance">0</strong><span id="oefBalanceLabel">Selected student OEF</span></div>
+        <div><strong>6</strong><span>roles</span></div>
+      </div>
+    </section>
+
+    <section id="loginPage" class="card">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Role login</p>
+          <h2>Choose your GRIT role</h2>
+        </div>
+        <button class="ghost" id="fillDemo">Fill demo credentials</button>
+      </div>
+      <div class="role-grid" id="roleGrid"></div>
+      <form id="loginForm" class="login-form">
+        <label>Email <input id="email" type="email" placeholder="student@grit.edu" required /></label>
+        <label>Password <input id="password" type="password" placeholder="demo123" required /></label>
+        <label>Selected role <input id="selectedRole" type="text" readonly value="student" /></label>
+        <button type="submit">Sign in to GRIT</button>
+      </form>
+      <p class="hint">Demo password for all users: <code>demo123</code>. Use professor@grit.edu, peer@grit.edu, employer@grit.edu, advisor@grit.edu, admin@grit.edu, or student@grit.edu.</p>
+    </section>
+
+    <section id="appPage" class="hidden">
+      <div class="dashboard-grid">
+        <aside class="card sidebar">
+          <h3 id="dashTitle">Dashboard</h3>
+          <p id="dashSubtitle">Role-specific workspace</p>
+          <button data-view="dashboard" class="nav active">Dashboard</button>
+          <button data-view="agents" class="nav">AI Agents</button>
+          <button data-view="myOef" class="nav student-only">My OEF Score</button>
+          <button data-view="oef" class="nav reviewer-only">Award OEF</button>
+          <button data-view="ledger" class="nav">OEF Ledger</button>
+          <button data-view="admin" class="nav admin-only">Admin Page</button>
+          <button id="logout" class="ghost">Logout</button>
+        </aside>
+
+        <section class="workspace">
+          <div id="dashboardView" class="view card">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow" id="roleEyebrow">Workspace</p>
+                <h2 id="roleHeading">Welcome to GRIT</h2>
+              </div>
+              <span class="badge" id="modeBadge">GPT or demo fallback</span>
+            </div>
+            <div class="cards-3" id="roleCards"></div>
+            <div class="callout">
+              <strong>OEF rule:</strong> A student cannot self-award OEF. Admin cannot award OEF either. GPT can recommend skills and evidence gaps, but only advisor/professor/employer/peer users select a student, review evidence, and submit the final OEF transaction. Students can view their own OEF history by role.
+            </div>
+          </div>
+
+          <div id="agentsView" class="view card hidden">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Resume and AI agents</p>
+                <h2>Run the seven GRIT agents</h2>
+              </div>
+              <button class="ghost" id="loadSample">Load sample evidence</button>
+            </div>
+            <div class="form-grid">
+              <label>Upload resume from disk (.txt, .pdf, .docx)
+                <input id="resumeFile" type="file" accept=".txt,.pdf,.docx" />
+              </label>
+              <label>Target role or goal
+                <input id="goal" placeholder="Database Administrator, AI Research Assistant, Data Analyst..." />
+              </label>
+            </div>
+            <label>Resume / evidence text
+              <textarea id="resumeText" rows="8" placeholder="Paste resume evidence or upload a file from disk."></textarea>
+            </label>
+            <label>Project or objective context
+              <textarea id="projectText" rows="4" placeholder="Optional: project idea, course context, verification objective..."></textarea>
+            </label>
+            <div class="agent-grid" id="agentGrid"></div>
+            <pre id="agentOutput" class="output">Agent output will appear here.</pre>
+          </div>
+
+          <div id="myOefView" class="view card hidden">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Student OEF profile</p>
+                <h2>My OEF score and reviewer history</h2>
+              </div>
+              <button id="refreshMyOef" class="ghost">Refresh my OEF</button>
+            </div>
+            <div id="myOefSummary">Your OEF summary will appear here.</div>
+            <h3>OEF given by different roles</h3>
+            <table id="myOefTable"><thead><tr><th>Date</th><th>Role</th><th>Reviewer</th><th>Skill</th><th>Evidence</th><th>OEF</th><th>Comment</th></tr></thead><tbody></tbody></table>
+          </div>
+
+          <div id="oefView" class="view card hidden">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Human verification workflow</p>
+                <h2>Select student → review evidence → award OEF</h2>
+              </div>
+              <span class="badge" id="roleRuleBadge">Role weight</span>
+            </div>
+            <div class="form-grid">
+              <label>Student list / ID
+                <select id="studentSelect"></select>
+              </label>
+              <label>Evidence to review
+                <select id="evidenceSelect"></select>
+              </label>
+              <label>Skill category
+                <select id="skillCategory"></select>
+              </label>
+              <label>Skill name
+                <input id="skillName" value="SQL Database Design" />
+              </label>
+              <label>Rubric score, quality 0-100
+                <input id="rubricScore" type="number" min="0" max="100" value="85" />
+              </label>
+              <label>Verifier confidence 0-100
+                <input id="confidence" type="number" min="0" max="100" value="90" />
+              </label>
+            </div>
+            <div class="student-panel" id="selectedStudentPanel">Select a student to inspect their evidence.</div>
+            <label>Verifier comment
+              <textarea id="verifyComment" rows="4">Evidence shows clear skill quality and practical application.</textarea>
+            </label>
+            <div class="button-row">
+              <button id="previewOefBtn" class="ghost">Preview OEF</button>
+              <button id="awardOefBtn">Submit OEF award</button>
+            </div>
+            <pre id="verifyOutput" class="output">OEF preview and transaction result will appear here.</pre>
+          </div>
+
+          <div id="ledgerView" class="view card hidden">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">OEF transaction ledger</p>
+                <h2>Approved reputation events</h2>
+              </div>
+              <button id="refreshLedger" class="ghost">Refresh ledger</button>
+            </div>
+            <table id="ledgerTable"><thead><tr><th>Date</th><th>Student</th><th>Role</th><th>Skill</th><th>Evidence</th><th>OEF</th></tr></thead><tbody></tbody></table>
+          </div>
+
+          <div id="adminView" class="view card hidden">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Admin page</p>
+                <h2>Manage users only</h2>
+              </div>
+              <button id="refreshAdmin" class="ghost">Refresh</button>
+            </div>
+            <div class="callout">
+              <strong>Admin rule:</strong> Admin cannot give OEF points. Admin can view username/email, password, role, linked student ID, update users, and delete users.
+            </div>
+            <div class="admin-panels">
+              <div>
+                <h3>Users</h3>
+                <table id="usersTable"><thead><tr><th>Name</th><th>Username / Email</th><th>Password</th><th>Role</th><th>Student ID</th><th>Actions</th></tr></thead><tbody></tbody></table>
+              </div>
+              <div>
+                <h3>Create / update user</h3>
+                <input id="adminOriginalEmail" type="hidden" />
+                <label>Name <input id="adminName" placeholder="Full name" /></label>
+                <label>Username / Email <input id="adminEmail" placeholder="user@grit.edu" /></label>
+                <label>Password <input id="adminPassword" value="demo123" /></label>
+                <label>Role
+                  <select id="adminRole">
+                    <option value="student">student</option>
+                    <option value="professor">professor</option>
+                    <option value="peer">peer</option>
+                    <option value="employer">employer</option>
+                    <option value="advisor">advisor</option>
+                    <option value="admin">admin</option>
+                  </select>
+                </label>
+                <label>Linked student ID, only for student users <input id="adminStudentId" placeholder="S1001" /></label>
+                <div class="button-row"><button id="saveUserBtn">Save user</button><button id="clearUserBtn" class="ghost">Clear form</button></div>
+                <p id="adminUserMessage" class="hint">Select Edit or create a new user.</p>
+              </div>
+            </div>
+            <h3>Students summary</h3>
+            <table id="studentsTable"><thead><tr><th>ID</th><th>Name</th><th>Goal</th><th>OEF</th></tr></thead><tbody></tbody></table>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

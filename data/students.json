@@ -1,0 +1,40 @@
+[
+  {
+    "studentId": "S1001",
+    "name": "Demo Student",
+    "email": "student@grit.edu",
+    "careerGoal": "Database Administrator",
+    "program": "Information Systems PhD",
+    "oefTotal": 0,
+    "evidence": [
+      { "evidenceId": "E1001", "title": "Resume.pdf", "type": "resume", "weight": 0.6, "summary": "Resume claim evidence for SQL, Java, database design, AI research, and project leadership." },
+      { "evidenceId": "E1002", "title": "Database Capstone Project", "type": "professor_graded_project", "weight": 1.2, "summary": "ERD, PostgreSQL schema, queries, documentation, and presentation artifact." },
+      { "evidenceId": "E1003", "title": "Internship / Employer Letter", "type": "verified_workplace_evidence", "weight": 1.3, "summary": "External workplace feedback about reliability, teamwork, and applied technical skill." }
+    ]
+  },
+  {
+    "studentId": "S1002",
+    "name": "Hana Mekonnen",
+    "email": "hana@student.grit.edu",
+    "careerGoal": "Data Analyst",
+    "program": "Computer Information Systems",
+    "oefTotal": 0,
+    "evidence": [
+      { "evidenceId": "E2001", "title": "Data Analytics Resume", "type": "resume", "weight": 0.6, "summary": "Resume evidence for Python, Excel, Tableau, and basic statistics." },
+      { "evidenceId": "E2002", "title": "Python Portfolio Project", "type": "project", "weight": 1.0, "summary": "Jupyter notebook, cleaned dataset, visualizations, and written interpretation." },
+      { "evidenceId": "E2003", "title": "Tableau Certificate", "type": "certificate", "weight": 1.0, "summary": "Certificate evidence for dashboard creation and BI foundations." }
+    ]
+  },
+  {
+    "studentId": "S1003",
+    "name": "Abel Tesfaye",
+    "email": "abel@student.grit.edu",
+    "careerGoal": "Software Engineer Intern",
+    "program": "Software Engineering",
+    "oefTotal": 0,
+    "evidence": [
+      { "evidenceId": "E3001", "title": "GitHub Project Link", "type": "project", "weight": 1.0, "summary": "CRUD app with authentication, API routes, and database persistence." },
+      { "evidenceId": "E3002", "title": "Team Peer Review", "type": "peer_statement", "weight": 0.5, "summary": "Peer feedback about collaboration, communication, and contribution." }
+    ]
+  }
+]
